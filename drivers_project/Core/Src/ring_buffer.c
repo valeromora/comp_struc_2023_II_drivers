@@ -16,3 +16,17 @@ void ring_buffer_init(ring_buffer_t *ring_buffer, uint8_t *buffer, uint16_t capa
 	ring_buffer->tail = 0;
 	ring_buffer->is_full = 0;
 }
+
+uint8_t ring_buffer_put(ring_buffer_t *ring_buffer,uint8_t data)
+{
+	ring_buffer->buffer[ring_buffer->head] = data;
+	ring_buffer->head = (ring_buffer->head +1 ) % ring_buffer->capacity;
+
+	if (ring_buffer->is_full != 0){
+		ring_buffer->tail = (ring_buffer->tail+1) % ring_buffer->capacity;
+	}
+
+	if (ring_buffer->head == ring_buffer->tail){
+		ring_buffer->is_full = 1;
+	}
+}
